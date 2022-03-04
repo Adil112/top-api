@@ -9,6 +9,10 @@ import { ProductController } from './product/product.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { getMongoConfig } from './configs/mongo.config';
+import { FilesModule } from './files/files.module';
+import { SitemapModule } from './sitemap/sitemap.module';
+import { TelegramModule } from './telegram/telegram.module';
+import { getTelegramConfig } from './configs/telegram.config';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -17,7 +21,20 @@ import { getMongoConfig } from './configs/mongo.config';
     inject: [ConfigService],
     useFactory: getMongoConfig
   }),
-    AuthModule, TopPageModule, ProductModule, ReviewModule],
+    AuthModule,
+    TopPageModule,
+    ProductModule,
+    ReviewModule,
+    FilesModule,
+    SitemapModule,
+  TelegramModule.forRootAsync(
+    {
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getTelegramConfig
+    }
+  )
+  ]
   //controllers: [AppController, ProductController],
   //providers: [AppService],
 })
